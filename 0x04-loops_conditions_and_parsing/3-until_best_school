@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# A script that displays Best School 10 time using untill
+
+var=1
+until [ $var -ge 10 ]; do
+	echo "Best School"
+	((var += 1))
+done
