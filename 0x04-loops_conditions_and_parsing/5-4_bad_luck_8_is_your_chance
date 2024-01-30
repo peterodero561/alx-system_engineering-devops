@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# A script that displays Best School 10 time using
+# while loop but for the 9th time it displays
+# Best School then Hi on the new line
+
+var=1
+while ((var<=10)); do
+	if ((var == 4)); then
+		echo "bad luck"
+	elif ((var == 8)); then
+		echo "good luck"
+	else
+		echo "Best School"
+	fi
+	((var+=1))
+done
