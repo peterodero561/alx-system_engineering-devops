@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# A script that displays Best School 10 time using
+# while loop but for the 9th time it displays
+# Best School then Hi on the new line
+
+var=1
+while ((var<=20)); do
+	case $var in
+		4)
+			echo "4"
+			echo "bad luck from China"
+			;;
+		9)
+			echo "9"
+			echo "bad luck from Japan"
+			;;
+		17)
+			echo "17"
+			echo "bad luck from Italy"
+			;;
+		*)
+			echo "$var"
+			;;
+	esac
+	((var+=1))
+done
