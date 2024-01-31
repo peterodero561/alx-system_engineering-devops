@@ -2,15 +2,12 @@
 # A script that displays the time for 12 hours and 59 minutes:
 
 
-var1=1
+var1=0
 while ((var1<=12)); do
 	var=1
-	while ((var<=60)); do
-		if ((var==60)); then
-			echo "Hour: $var1"
-		else
-			echo "$var"
-		fi
+	echo "Hour: $var1"
+	while ((var<60)); do
+		echo "$var"
 		((var+=1))
 	done
 	((var1+=1))
