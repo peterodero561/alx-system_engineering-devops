@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# A script that displays the time for 12 hours and 59 minutes:
+
+
+var1=1
+while ((var1<=12)); do
+	var=1
+	while ((var<=60)); do
+		if ((var==60)); then
+			echo "Hour: $var1"
+		else
+			echo "$var"
+		fi
+		((var+=1))
+	done
+	((var1+=1))
+done
