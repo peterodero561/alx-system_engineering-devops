@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# A script that diplays its own pid
+
+own_pid=$$
+echo "$own_pid"
