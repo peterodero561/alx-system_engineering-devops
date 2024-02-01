@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# A script that displays the PID, along with the process
+# name, of processes whose name contain the word b
+
+shopt -s extglob
+for pid in /proc/+([0-9]); do
+    if [[ -f "$pid/cmdline" ]]; then
+        if grep -q bash "$pid/cmdline"; then
+            echo "$(basename "$pid") $(tr '\0' ' ' < "$pid/cmdline")"
+        fi
+    fi
+done
