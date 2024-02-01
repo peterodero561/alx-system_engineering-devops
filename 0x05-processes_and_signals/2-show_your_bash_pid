@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# A script that displays a list of currently running processes
+
+script_pid=$$
+ps aux | grep -w "bash" | grep -v grep
+echo "$script_pid"
