@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# A script that displays listening ports
+
+# check if net stat is available
+if command -v netstat &> /dev/null; then
+	netstat -tuln | grep 'LISTEN' | awk '{print "Port:", $4, "| PID:", $(NF-1), "| Program:", $NF}'
+fi
