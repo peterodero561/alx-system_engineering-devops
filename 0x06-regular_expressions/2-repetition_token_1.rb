@@ -2,7 +2,7 @@
 # A script that serch for  0 or 1 "b" in a pattern
 
 def match(arg)
-  regex = /hb?tn/
+  regex = /hb{0,1}tn/
   matches = arg.scan(regex)
   result = matches.join
   puts result
