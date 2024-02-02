@@ -5,9 +5,9 @@
 
 def match_school(arg)
   regex = /School/
-  if arg =~ regex
-    puts "'#{arg}'"
-  end
+  matches = arg.scan(regex)
+  result = matches.join
+  puts result
 end
 
 #check if atleat one command line argument is provided
