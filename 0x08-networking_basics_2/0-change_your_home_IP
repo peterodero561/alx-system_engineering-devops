@@ -1,0 +1,10 @@
+#!/bin/bash
+# a script that configures an Ubuntu server with the below requirements.
+# Backup the original /etc/hosts file
+cp /etc/hosts /etc/hosts.bak
+
+# Update localhost to resolve to 127.0.0.2
+sed -i '/^127.0.0.1/ s/$/ 127.0.0.2/' /etc/hosts
+
+# Add entry for facebook.com to resolve to 8.8.8.8
+echo "8.8.8.8 facebook.com" >> /etc/hosts
