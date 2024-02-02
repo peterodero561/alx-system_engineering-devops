@@ -1,5 +1,5 @@
 #!/bin/bash
-# a script that configures an Ubuntu server with the below requirements.
+# A script that configures an Ubuntu server with the below requirements.
 # Backup the original /etc/hosts file
 cp /etc/hosts /etc/hosts.bak
 
