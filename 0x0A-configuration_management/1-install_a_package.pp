@@ -1,6 +1,7 @@
 # This pupet file manifest and installs flask
 
-package { 'flask':
-  ensure   => '2.1.0',
-  provider => 'pip3',
+package { 'install_flask_2.1.0':
+  command   => 'pip3 install flask=2.1.0',
+  path    => '/usr/bin',
+  unless  => 'pip3 show flask | grep -q "Version: 2.1.0"',
 }
