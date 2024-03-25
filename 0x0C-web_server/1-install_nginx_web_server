@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# script to install nginx web-01
+
+# update and install
+apt-get update
+apt-get install nginx
+
+# configure the server to listen to port 80
+echo "sever {
+	listen 80;
+	location / {
+		echo \"Hello World!\";
+	}
+}" > /etx/nginx/sites-available/default
+
+# reload
+/etc/init.d/nginx reload
