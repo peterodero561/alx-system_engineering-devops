@@ -3,7 +3,7 @@
 
 # update and install
 apt-get update
-apt-get install nginx
+apt-get install -y nginx
 
 # configure the server to listen to port 80
 echo "sever {
@@ -11,7 +11,7 @@ echo "sever {
 	location / {
 		echo \"Hello World!\";
 	}
-}" > /etx/nginx/sites-available/default
+}" > /etc/nginx/sites-available/default
 
 # reload
 /etc/init.d/nginx reload
