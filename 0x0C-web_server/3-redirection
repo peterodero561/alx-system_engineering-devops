@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Configure your Nginx to /redirect_me is redirecting to another page.
 # Install nginx
 sudo apt-get update
