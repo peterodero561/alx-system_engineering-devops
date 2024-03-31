@@ -1,33 +1,30 @@
 #!/bin/bash
-
+# Configure your Nginx to /redirect_me is redirecting to another page.
 # Install nginx
-apt-get update
-apt-get install -y nginx
+sudo apt-get update
+sudo apt-get install -y nginx
 
 # Configure nginx for redirection
-echo "
+sudo tee /etc/nginx/sites-available/redirect_me <<EOF
 server {
     listen 80;
-    server_name your_domain.com;
+    server_name peterdev.tech;
+
+    location /redirect_me {
+        return 301 https://www.youtube.com/;
+    }
 
     location / {
-        return 301 http://www.your_domain.com\$request_uri;
+        return 404;
     }
 }
-
-server {
-    listen 80;
-    server_name www.your_domain.com;
-
-    # Your main server configuration goes here
-}
-" > /etc/nginx/sites-available/your_domain
+EOF
 
 # Create a symbolic link to enable the site
-ln -s /etc/nginx/sites-available/your_domain /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/redirect_me /etc/nginx/sites-enabled/
 
 # Test nginx configuration
 nginx -t
 
 # Restart nginx to apply changes
-service nginx restart
+sudo service nginx restart
