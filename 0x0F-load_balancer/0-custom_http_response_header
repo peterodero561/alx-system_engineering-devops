@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# configure both my webservers to return their host name
+# update packages
+sudo apt update
+
+# instal nginx
+sudo apt install -y nginx
+
+# define custom header configuration
+custom_header_config="add_header X-Served-By \$hostname;"
+
+# add custom header to config of nginx config
+sudo sed -i "/http {/a $custom_header_config" /etc/nginx/nginx.conf
+
+# restart to to apply changes
+sudo systemctl restart nginx
