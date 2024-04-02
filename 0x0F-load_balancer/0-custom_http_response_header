@@ -7,10 +7,18 @@ sudo apt update
 sudo apt install -y nginx
 
 # define custom header configuration
-custom_header_config="add_header X-Served-By \$hostname;"
+cat <<EOF > /etc/nginx/conf.d/custom_http_response_header.conf
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
 
-# add custom header to config of nginx config
-sudo sed -i "/http {/a $custom_header_config" /etc/nginx/nginx.conf
+    server_name peterdev.tech;
+
+    location / {
+        add_header X-Served-By $HOSTNAME;
+    }
+}
+EOF
 
 # restart to to apply changes
 sudo systemctl restart nginx
