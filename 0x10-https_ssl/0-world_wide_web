@@ -6,11 +6,14 @@ display_subdomain_info() {
     local subdomain="$2"
     
     # Retrieve DNS information for the specified subdomain
-    local dns_info=$(dig +short "$subdomain.$domain")
+    local dns_info
+    dns_info=$(dig +short "$subdomain.$domain")
 
     # Extract the record type and destination from the DNS information
-    local record_type=$(echo "$dns_info" | awk 'NR==1{print $4}')
-    local destination=$(echo "$dns_info" | awk 'NR==1{print $1}')
+    local record_type
+    record_type=$(echo "$dns_info" | awk 'NR==1{print $4}')
+    local destination
+    destination=$(echo "$dns_info" | awk 'NR==1{print $1}')
 
     # Print the information
     echo "The subdomain $subdomain is a $record_type record and points to $destination"
