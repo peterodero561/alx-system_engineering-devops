@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# configures a server to listen to port 80
+
+# the path to configuration file
+nginx_conf="/etc/nginx/sites-enabled/default"
+
+# server configuratio
+server_block="
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server ipv6only=on;
+
+	root /usr/share/nginx/html;
+	index index.html index.htm;
+
+	# Make site accessible from http://localhost/
+	server_name localhost;
+
+	location / {
+		# First attempt to serve request as file, then
+		# as directory, then fall back to displaying a 404.
+		try_files \$uri \$uri/ =404;
+		# Uncomment to enable naxsi on this location
+		# include /etc/nginx/naxsi.rules
+	}
+}
+"
+
+# check if nginx configuration file exists
+if [ -f "$nginx_conf" ]; then
+	# add server block to the configuration file
+	echo "$server_block" | sudo tee -a "$nginx_conf" > /dev/null
+fi
+# restart nginx
+sudo service nginx start
