@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-if [ -f "/etc/nginx/sites-enabled/default" ]; then
-    echo "$server_block" | sudo tee -a "/etc/nginx/sites-enabled/default" > /dev/null
-fi
+server_block="server { listen 80 default_server; listen [::]:80 default_server ipv4only=on; root /usr/share/nginx/html; index index.html index.htm; server_name localhost; location / { try_files \$uri \$uri/ =404; } }"
+sudo netstat -tuln | grep ':80' || { sudo service nginx start; sleep 2; sudo netstat -tuln | grep ':80' || echo "nginx is not running"; }
+[ -f "/etc/nginx/sites-enabled/default" ] && echo "$server_block" | sudo tee -a "/etc/nginx/sites-enabled/default" > /dev/null
 sudo service nginx restart
