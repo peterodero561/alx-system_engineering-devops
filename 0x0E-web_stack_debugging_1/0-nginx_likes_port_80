@@ -25,6 +25,30 @@ server {
 	}
 }
 "
+# Check if Nginx is already running and listening on port 80
+nginx_running=$(sudo netstat -tuln | grep ':80')
+
+if [ -z "$nginx_running" ]; then
+    # Nginx is not running or not listening on port 80
+    echo "Nginx is not running or not listening on port 80. Attempting to start Nginx..."
+
+    # Start Nginx
+    sudo service nginx start
+
+    # Wait for Nginx to start
+    sleep 2
+
+    # Check if Nginx is now listening on port 80
+    nginx_running=$(sudo netstat -tuln | grep ':80')
+
+    if [ -n "$nginx_running" ]; then
+        echo "Nginx is now running and listening on port 80."
+    else
+        echo "Failed to start Nginx or Nginx is not listening on port 80. Please check Nginx's status and logs for errors."
+    fi
+else
+    echo "Nginx is already running and listening on port 80."
+fi
 
 # check if nginx configuration file exists
 if [ -f "$nginx_conf" ]; then
