@@ -1,0 +1,33 @@
+global
+    log /dev/log    local0
+    log /dev/log    local1 notice
+    chroot /var/lib/haproxy
+    stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd >
+    stats timeout 30s
+    user haproxy
+    group haproxy
+    daemon
+
+defaults
+    log global
+    mode http
+    option httplog
+    option dontlognull
+    timeout connect 5000
+    timeout client  50000
+    timeout server  50000
+
+frontend http_front
+    bind *:80
+    http-request redirect scheme https code 301 if !{ ssl_fc }
+
+frontend https_front
+    bind *:443 ssl crt /etc/letsencrypt/live/www.peterdev.tech/fullchain>
+    http-request add-header X-Forwarded-Proto https
+    acl is_root path -i /
+    default_backend https_back
+
+backend https_back
+  balance roundrobin
+  server web-1 498631-web-01:80 check
+  server web-2 498631-web-02:80 check
