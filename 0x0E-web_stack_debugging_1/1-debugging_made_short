@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+if [ -f "/etc/nginx/sites-enabled/default" ]; then
+    echo "$server_block" | sudo tee -a "/etc/nginx/sites-enabled/default" > /dev/null
+fi
+sudo service nginx restart
