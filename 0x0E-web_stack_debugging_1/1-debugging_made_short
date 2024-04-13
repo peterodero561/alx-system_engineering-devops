@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-server_block="server { listen 80 default_server; listen [::]:80 default_server ipv4only=on; root /usr/share/nginx/html; index index.html index.htm; server_name localhost; location / { try_files \$uri \$uri/ =404; } }"
-sudo netstat -tuln | grep ':80' || { sudo service nginx start; sleep 2; sudo netstat -tuln | grep ':80' || echo "nginx is not running"; }
-[ -f "/etc/nginx/sites-enabled/default" ] && echo "$server_block" | sudo tee -a "/etc/nginx/sites-enabled/default" > /dev/null
+# Using what you did for task #0, make your fix short and sweet.
+echo -e "server {\n    listen 80 default_server;\n    listen [::]:80 default_server ipv4only=on;\n    root /usr/share/nginx/html;\n    index index.html index.htm;\n    server_name localhost;\n    location / {\n        try_files \$uri \$uri/ =404;\n    }\n}" | sudo tee /etc/nginx/sites-available/default > /dev/null
+sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
 sudo service nginx restart
