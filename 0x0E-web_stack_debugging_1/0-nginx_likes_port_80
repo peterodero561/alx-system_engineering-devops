@@ -30,7 +30,3 @@ sudo nginx -t
 
 # Restart Nginx to apply changes
 sudo systemctl restart nginx
-
-# Check if Nginx is running and listening on port 80
-sudo systemctl status nginx
-netstat -plnt | grep ':80'
