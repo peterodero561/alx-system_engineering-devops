@@ -1,59 +1,36 @@
 #!/usr/bin/env bash
 # configure server to listen to port 80
-# Step 1: Check Nginx configuration
-echo "Checking Nginx configuration..."
-nginx -t
-nginx_status=$?
-if [ $nginx_status -ne 0 ]; then
-    echo "Nginx configuration test failed. Exiting."
-    exit 1
-fi
 
-# Step 2: Ensure Nginx service is running
-echo "Checking Nginx service status..."
-service nginx status
-service_status=$?
-if [ $service_status -ne 0 ]; then
-    echo "Nginx service is not running. Starting Nginx..."
-    service nginx start
-    start_status=$?
-    if [ $start_status -ne 0 ]; then
-        echo "Failed to start Nginx service. Exiting."
-        exit 1
-    fi
-fi
+# Install Nginx if it's not installed
+sudo apt-get update
+sudo apt-get install -y nginx
 
-# Step 3: Check if port 80 is already in use
-echo "Checking if port 80 is already in use..."
-netstat -tuln | grep ":80\b"
-port_status=$?
-if [ $port_status -eq 0 ]; then
-    echo "Port 80 is already in use by another process. Exiting."
-    exit 1
-fi
+# Check and remove any default configuration that may conflict
+sudo rm /etc/nginx/sites-enabled/default
 
-# Step 4: Check firewall settings
-echo "Checking firewall settings..."
-ufw status | grep "80/tcp" | grep "ALLOW"
-firewall_status=$?
-if [ $firewall_status -ne 0 ]; then
-    echo "Port 80 is not allowed in firewall settings. Allowing port 80..."
-    ufw allow 80/tcp
-    allow_status=$?
-    if [ $allow_status -ne 0 ]; then
-        echo "Failed to allow port 80 in firewall settings. Exiting."
-        exit 1
-    fi
-fi
+# Create a new Nginx server block file
+cat << EOF | sudo tee /etc/nginx/sites-available/my_site
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
+    server_name _;
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+}
+EOF
 
-# Step 5: Verify if Nginx returns a web page and HTTP 200
-echo "Verifying if Nginx returns a web page and HTTP 200..."
-curl -s -o /dev/null -w "%{http_code}" http://localhost
-http_status=$?
-if [ $http_status -ne 200 ]; then
-    echo "Nginx did not return HTTP 200 status. Exiting."
-    exit 1
-fi
+# Enable the new configuration
+sudo ln -s /etc/nginx/sites-available/my_site /etc/nginx/sites-enabled/
 
-echo "Configuration checks passed. Nginx is ready to listen on port 80."
-exit 0
+# Check for any syntax errors in Nginx files
+sudo nginx -t
+
+# Restart Nginx to apply changes
+sudo systemctl restart nginx
+
+# Check if Nginx is running and listening on port 80
+sudo systemctl status nginx
+netstat -plnt | grep ':80'
