@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 # Using what you did for task #0, make your fix short and sweet.
-echo -e "server {\n    listen 80 default_server;\n    listen [::]:80 default_server ipv4only=on;\n    root /usr/share/nginx/html;\n    index index.html index.htm;\n    server_name localhost;\n    location / {\n        try_files \$uri \$uri/ =404;\n    }\n}" | sudo tee /etc/nginx/sites-available/default > /dev/null
+echo -e "server {\n    listen 80 default_server\n    listen [::]:80 default_server ipv4only=on\n    root /usr/share/nginx/html\n    index index.html index.htm\n    server_name localhost\n    location / {\n        try_files \$uri \$uri/ =404\n    }\n}" | sudo tee /etc/nginx/sites-available/default > /dev/null
 sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
 sudo service nginx restart
