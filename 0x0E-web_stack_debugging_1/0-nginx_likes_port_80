@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # configure server to listen to port 80
 # Step 1: Check Nginx configuration
 echo "Checking Nginx configuration..."
