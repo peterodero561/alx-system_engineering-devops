@@ -1,59 +1,59 @@
-#!/usr/bin/env bash
-# configures a server to listen to port 80
+#!/bin/bash
+# configure server to listen to port 80
+# Step 1: Check Nginx configuration
+echo "Checking Nginx configuration..."
+nginx -t
+nginx_status=$?
+if [ $nginx_status -ne 0 ]; then
+    echo "Nginx configuration test failed. Exiting."
+    exit 1
+fi
 
-# the path to configuration file
-nginx_conf="/etc/nginx/sites-enabled/default"
-
-# server configuratio
-server_block="
-server {
-	listen 80 default_server;
-	listen [::]:80 default_server ipv4only=on;
-
-	root /usr/share/nginx/html;
-	index index.html index.htm;
-
-	# Make site accessible from http://localhost/
-	server_name localhost;
-
-	location / {
-		# First attempt to serve request as file, then
-		# as directory, then fall back to displaying a 404.
-		try_files \$uri \$uri/ =404;
-		# Uncomment to enable naxsi on this location
-		# include /etc/nginx/naxsi.rules
-	}
-}
-"
-# Check if Nginx is already running and listening on port 80
-nginx_running=$(sudo netstat -tuln | grep ':80')
-
-if [ -z "$nginx_running" ]; then
-    # Nginx is not running or not listening on port 80
-    echo "Nginx is not running or not listening on port 80. Attempting to start Nginx..."
-
-    # Start Nginx
-    sudo service nginx start
-
-    # Wait for Nginx to start
-    sleep 2
-
-    # Check if Nginx is now listening on port 80
-    nginx_running=$(sudo netstat -tuln | grep ':80')
-
-    if [ -n "$nginx_running" ]; then
-        echo "Nginx is now running and listening on port 80."
-    else
-        echo "Failed to start Nginx or Nginx is not listening on port 80. Please check Nginx's status and logs for errors."
+# Step 2: Ensure Nginx service is running
+echo "Checking Nginx service status..."
+service nginx status
+service_status=$?
+if [ $service_status -ne 0 ]; then
+    echo "Nginx service is not running. Starting Nginx..."
+    service nginx start
+    start_status=$?
+    if [ $start_status -ne 0 ]; then
+        echo "Failed to start Nginx service. Exiting."
+        exit 1
     fi
-else
-    echo "Nginx is already running and listening on port 80."
 fi
 
-# check if nginx configuration file exists
-if [ -f "$nginx_conf" ]; then
-	# add server block to the configuration file
-	echo "$server_block" | sudo tee -a "$nginx_conf" > /dev/null
+# Step 3: Check if port 80 is already in use
+echo "Checking if port 80 is already in use..."
+netstat -tuln | grep ":80\b"
+port_status=$?
+if [ $port_status -eq 0 ]; then
+    echo "Port 80 is already in use by another process. Exiting."
+    exit 1
 fi
-# restart nginx
-sudo service nginx start
+
+# Step 4: Check firewall settings
+echo "Checking firewall settings..."
+ufw status | grep "80/tcp" | grep "ALLOW"
+firewall_status=$?
+if [ $firewall_status -ne 0 ]; then
+    echo "Port 80 is not allowed in firewall settings. Allowing port 80..."
+    ufw allow 80/tcp
+    allow_status=$?
+    if [ $allow_status -ne 0 ]; then
+        echo "Failed to allow port 80 in firewall settings. Exiting."
+        exit 1
+    fi
+fi
+
+# Step 5: Verify if Nginx returns a web page and HTTP 200
+echo "Verifying if Nginx returns a web page and HTTP 200..."
+curl -s -o /dev/null -w "%{http_code}" http://localhost
+http_status=$?
+if [ $http_status -ne 200 ]; then
+    echo "Nginx did not return HTTP 200 status. Exiting."
+    exit 1
+fi
+
+echo "Configuration checks passed. Nginx is ready to listen on port 80."
+exit 0
