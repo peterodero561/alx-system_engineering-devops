@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# install ufw and configure it to listen to ports 22, 483, and 80 of tcp
+# update and install
+sudo apt update
+sudo apt install -y ufw
+# enable ufw
+sudo ufw enable
+# deny all incomming 
+sudo ufw default deny incoming
+# allow 22 ssh
+sudo ufw allow 22/tcp
+# allow 443 https
+sudo ufw allow 443/tcp
+# allow 80 http
+sudo ufw allow 80/tcp
+# show status to verify rules
+sudo ufw status
