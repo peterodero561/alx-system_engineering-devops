@@ -1,5 +1,5 @@
-#!/bin/bash
-
+#!/usr/bin/env bash
+# a script to back up my primary and slave databases
 # Check if the password argument is provided
 if [ $# -ne 1 ]; then
     echo "Usage: $0 <mysql_password>"
