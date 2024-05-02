@@ -9,6 +9,9 @@ fi
 # MySQL dump filename
 backup_file="backup.sql"
 
+# Compressed dump filename
+compressed_backup="$backup_file.gz"
+
 # Compressed archive filename
 archive_name="$(date +'%d-%m-%Y').tar.gz"
 
@@ -23,19 +26,26 @@ else
     exit 1
 fi
 
-# Create compressed archive
-tar -czvf "$archive_name" "$backup_file"
+# Compress MySQL dump
+gzip "$backup_file"
 
 # Check if tar command was successful
-if [ $? -eq 0 ]; then
-    echo "Compressed archive created: $archive_name"
-else
+if [ $? -ne 0 ]; then
+    echo "Error: Failed to compressed MySQL dump"
+    exit 1
+fi
+
+# Create tar archive
+tar -czvf "$archive_name" "$compressed_backup"
+
+# Check if tar command was successful
+if [ $? -ne 0 ]; then
     echo "Error: Failed to create compressed archive"
     exit 1
 fi
 
-# Clean up dump file
-rm "$backup_file"
+# Clean up compressed dump file
+rm "$compressed_backup"
 
 exit 0
 
