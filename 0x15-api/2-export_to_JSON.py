@@ -7,7 +7,7 @@ import requests
 def get_employee_todo_progress(employee_id):
     '''exports data in json'''
     b_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}/todos"
-    response = requests.get(base_url)
+    response = requests.get(b_url)
 
     if response.status_code == 200:
         todos = response.json()
