@@ -14,8 +14,8 @@ def export_json():
         for user in users:
             user_id = user['id']
             username = user['username']
-            t_url = f'https://jsonplaceholder.typicode.com/users/{user_id}/todos'
-            user_todos = requests.get(t_url).json()
+            tU = f'https://jsonplaceholder.typicode.com/users/{user_id}/todos'
+            user_todos = requests.get(tU).json()
             user_tasks = []
             for todo in user_todos:
                 task = {
