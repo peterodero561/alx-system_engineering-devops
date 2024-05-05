@@ -8,7 +8,7 @@ def get_ToDo_list(emp_id):
     response = requests.get(base_url)
     if response.status_code == 200:
         todos = response.json()
-        
+
         # count completed tasks
         completed = [todo for todo in todos if todo['completed']]
         No_completed = len(completed)
@@ -20,8 +20,11 @@ def get_ToDo_list(emp_id):
         emp_name = user_response.json()['name']
 
         # print output
+        na = emp_name
+        nc = No_completed
+        tc = total_tasks
         print(
-                f'Employee {emp_name} is done with tasks {No_completed}/{total_tasks}')
+                f'Employee {na} is done with tasks {nc}/{tc}')
         for task in completed:
             print(f'\t{task["title"]}')
     else:
