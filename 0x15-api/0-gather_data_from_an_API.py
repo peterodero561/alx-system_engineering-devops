@@ -1,9 +1,13 @@
 #!/usr/bin/python3
+'''Python script that, using this jsonplaceholder.typicode.com/,
+for a given employee ID, returns information about
+his/her TODO list progress'''
 import requests
 import sys
 
 
 def get_ToDo_list(emp_id):
+    '''Function to get the to do list'''
     base_url = f"https://jsonplaceholder.typicode.com/users/{emp_id}/todos"
     response = requests.get(base_url)
     if response.status_code == 200:
