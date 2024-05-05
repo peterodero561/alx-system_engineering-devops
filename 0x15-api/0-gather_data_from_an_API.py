@@ -27,10 +27,9 @@ def get_ToDo_list(emp_id):
         na = emp_name
         nc = No_completed
         tc = total_tasks
-        print(
-                f'Employee {na} is done with tasks {nc}/{tc}')
+        print(f'Employee {na} is done with tasks({nc}/{tc}):')
         for task in completed:
-            print(f'\t{task["title"]}')
+            print(f'    {task["title"]}')
     else:
         print('Error: could not retrive data')
 
