@@ -1,0 +1,37 @@
+#!/usr/bin/python3
+import requests
+import sys
+
+
+def get_ToDo_list(emp_id):
+    base_url = f"https://jsonplaceholder.typicode.com/users/{emp_id}/todos"
+    response = requests.get(base_url)
+    if response.status_code == 200:
+        todos = response.json()
+        
+        # count completed tasks
+        completed = [todo for todo in todos if todo['completed']]
+        No_completed = len(completed)
+        total_tasks = len(todos)
+
+        # get employee name
+        user_url = f'https://jsonplaceholder.typicode.com/users/{emp_id}'
+        user_response = requests.get(user_url)
+        emp_name = user_response.json()['name']
+
+        # print output
+        print(
+                f'Employee {emp_name} is done with tasks {No_completed}/{total_tasks}')
+        for task in completed:
+            print(f'\t{task["title"]}')
+    else:
+        print('Error: could not retrive data')
+
+
+if __name__ == '__main__':
+    if len(sys.argv) != 2:
+        print('Usage: ./0-gather_data_from_an_API.py <employee id>')
+        sys.exit(1)
+
+    emp_id = int(sys.argv[1])
+    get_ToDo_list(emp_id)
