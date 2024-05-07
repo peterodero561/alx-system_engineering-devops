@@ -1,10 +1,12 @@
 #!/usr/bin/python3
-'''returns a list containing the titles of all hot articles for a given subreddit.'''
+'''returns a list containing the titles of all hot
+articles for a given subreddit.'''
 import requests
 
 
 def recurse(subreddit, hot_list=[], after=None):
-    '''returns a list containing the titles of all hot articles for a given subreddit.'''
+    '''returns a list containing the titles of all
+    hot articles for a given subreddit.'''
     url = f"https://www.reddit.com/r/{subreddit}/hot.json?limit=100"
     headers = {'User-Agent': 'MyBot/0.0.1'}
     params = {'after': after} if after else {}
