@@ -11,11 +11,11 @@ server {
     server_name peterdev.tech;
 
     location /redirect_me {
-        return 301 https://www.youtube.com/;
+        return 301;
     }
 
     location / {
-        return 404;
+        return 301;
     }
 }
 EOF
