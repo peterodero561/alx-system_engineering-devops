@@ -37,6 +37,6 @@ def count_words(subreddit, word_list, after=None, word_count={}):
                 for word, count in sorted_word_count:
                     print(f"{word.lower()}: {count}")
         else:
-            print("Invalid subreddit or other error")
+            return
     except Exception as e:
         print(f"Error: {e}")
