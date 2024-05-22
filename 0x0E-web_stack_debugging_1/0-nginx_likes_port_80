@@ -9,7 +9,7 @@ sudo apt-get install -y nginx
 sudo rm /etc/nginx/sites-enabled/default
 
 # Create a new Nginx server block file
-cat << EOF | sudo tee /etc/nginx/sites-available/my_site
+cat << EOF | sudo tee /etc/nginx/sites-available/default
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
@@ -30,3 +30,7 @@ sudo nginx -t
 
 # Restart Nginx to apply changes
 sudo systemctl restart nginx
+
+# checking
+sudo service nginx start
+ps aux | grep nginx
