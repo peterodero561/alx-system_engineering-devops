@@ -33,4 +33,3 @@ sudo systemctl restart nginx
 
 # checking
 sudo service nginx start
-ps aux | grep nginx
