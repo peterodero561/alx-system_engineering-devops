@@ -10,11 +10,15 @@ frontend http_front
     bind *:80
     stats uri /haproxy?stats
     default_backend http_back
+    timeout client 30s
 
 backend http_back
   balance roundrobin
-  server web-1 498631-web-01:80 check
-  server web-2 498631-web-02:80 check
+  mode http
+  timeout connect 5s
+  timeout server 30s
+  server web-1 3.85.175.115:80 check
+  server web-2 34.204.76.71:80 check
 EOF
 # enable HAproxy mangement via Init Script
 sudo sed -i 's/#ENABLED=0/ENABLED=1/' /etc/default/haproxy
