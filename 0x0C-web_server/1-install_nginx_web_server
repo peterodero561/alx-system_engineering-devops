@@ -6,7 +6,8 @@ apt-get update
 apt-get install -y nginx
 
 # configure the server to listen to port 80
-sudo sed -i 's/listen 80;/g' /etc/nginx/sites-available/default
+sudo sed -i 's/listen 80 default_server;/listen 80;/g' /etc/nginx/sites-available/default
+sudo sed -i 's/listen \[::\]:80 default_server;/listen \[::\]:80;/g' /etc/nginx/sites-available/default
 # Restart nginx without systemctl
 sudo service nginx restart
 
