@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# Ensure script is run as root
+if [[ $EUID -ne 0 ]]; then
+    echo "This script must be run as root"
+    exit 1
+fi
+
+# 1. Set Nginx to run as the nginx user
+sed -i 's/^user .*/user nginx;/g' /etc/nginx/nginx.conf
+
+# 2. Configure Nginx to listen on all active IPs on port 8080
+sed -i 's/^listen .*/listen 8080 default_server;/g' /etc/nginx/sites-available/default
+
+# 3. Prevent Nginx removal via apt-get remove (mark it as manually installed)
+apt-mark manual nginx
+
+# 4. Restart Nginx to apply changes
+systemctl restart nginx
