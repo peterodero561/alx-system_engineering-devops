@@ -44,7 +44,7 @@ server {
 	# Add index.php to the list if you are using PHP
 	index index.html index.htm index.nginx-debian.html;
 
-	server_name _;
+	server_name 3.85.175.115;
 
 	location / {
 		# First attempt to serve request as file, then
