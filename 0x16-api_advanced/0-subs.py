@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+'''function to querry subreddit'''
+
 import requests
 
 def number_of_subscribers(subreddit):
